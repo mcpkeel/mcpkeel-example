@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 22
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
-      - uses: mcpkeel/mcpkeel@b07af87b7cace55d2f356478a5c5774cf26026aa # v0.4.1
+      - uses: mcpkeel/mcpkeel@443d49bcf861c66f418ce4b65bf505f7dd9037b8 # v0.5.0
         with:
           probe: true
           sarif: mcpkeel.sarif
