@@ -1760,7 +1760,7 @@
       "transport": "stdio"
     },
     "time": {
-      "integrity": "sha256-v+1pbR/Gqo7ExtiD/X1Zofx8KE6A3Rxqw4NrW7jWBBQ=",
+      "integrity": "sha256-lM2lXj1DyySwYZDZEM9hjhD96DdhMIUnClqPFr7aHms=",
       "package": {
         "ecosystem": "pypi",
         "integrity": "sha256-FyX7BoWd211GDU6oIRU/7b2EckHxovjb3+4IOHmxzaQ=",
@@ -1774,7 +1774,9 @@
       },
       "source": {
         "args": [
-          "mcp-server-time==2026.11.11"
+          "mcp-server-time==2026.11.11",
+          "--local-timezone",
+          "UTC"
         ],
         "command": "uvx"
       },
@@ -1790,14 +1792,14 @@
           "inputSchema": {
             "properties": {
               "source_timezone": {
-                "default": "America/Sao_Paulo",
-                "description": "Source IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "default": "UTC",
+                "description": "Source IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'UTC', when omitted.",
                 "title": "Source Timezone",
                 "type": "string"
               },
               "target_timezone": {
-                "default": "America/Sao_Paulo",
-                "description": "Target IANA timezone name (e.g., 'Asia/Tokyo', 'America/San_Francisco'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "default": "UTC",
+                "description": "Target IANA timezone name (e.g., 'Asia/Tokyo', 'America/San_Francisco'). Optional: defaults to the server's local timezone, 'UTC', when omitted.",
                 "title": "Target Timezone",
                 "type": "string"
               },
@@ -1813,7 +1815,7 @@
             "title": "convert_timeArguments",
             "type": "object"
           },
-          "integrity": "sha256-QjExUvZuAZ9l9ljxGCzTL1kPLH7DDsoX+4V4Sli/ePo=",
+          "integrity": "sha256-PB3sivbYoJIHSVavVoYZYvObK+CIbMeqJsDlur7ATbY=",
           "outputSchema": {
             "$defs": {
               "LaterOccurrence": {
@@ -1916,8 +1918,8 @@
           "inputSchema": {
             "properties": {
               "timezone": {
-                "default": "America/Sao_Paulo",
-                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "default": "UTC",
+                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'UTC', when omitted.",
                 "title": "Timezone",
                 "type": "string"
               }
@@ -1925,7 +1927,7 @@
             "title": "get_current_timeArguments",
             "type": "object"
           },
-          "integrity": "sha256-PJSrwQJ/6lmBYv7CUpLg4HHpLaWADJL8KkfUXehUp34=",
+          "integrity": "sha256-eguj5td+hpIc9i9fBPPhB6/gas1mokyxiM4uEOKbBW0=",
           "outputSchema": {
             "properties": {
               "datetime": {
@@ -1994,8 +1996,8 @@
                 "type": "integer"
               },
               "timezone": {
-                "default": "America/Sao_Paulo",
-                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "default": "UTC",
+                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'UTC', when omitted.",
                 "title": "Timezone",
                 "type": "string"
               }
@@ -2003,7 +2005,7 @@
             "title": "get_time_agoArguments",
             "type": "object"
           },
-          "integrity": "sha256-Cu1yaG5UEgyEeUufcTK8bNxKP3Fid81GViFLkmlRsek=",
+          "integrity": "sha256-Gf2BLVjVKrU7wjDlV87Zk8JGT4G6zKMXBPoCUTE41dg=",
           "outputSchema": {
             "properties": {
               "datetime": {
