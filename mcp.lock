@@ -1,0 +1,2040 @@
+{
+  "lockfileVersion": 1,
+  "servers": {
+    "context7": {
+      "instructions": "Use this server to fetch current documentation whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service — even well-known ones like React, Next.js, Prisma, Express, Tailwind, Django, or Spring Boot. This includes API syntax, configuration, version migration, porting code between libraries, platforms, or SQL dialects, library-specific debugging, setup instructions, and CLI tool usage. Use even when you think you know the answer — your training data may not reflect recent changes. Prefer this over web search for library docs.\n\nDo not use for: refactoring, debugging, or reviewing code that does not depend on a library or platform API, or general programming concepts.",
+      "integrity": "sha256-FWwKCALiSFK52GSyhwpJ3eeP0eOPhDJlXIfzRE40syQ=",
+      "package": {
+        "ecosystem": "npm",
+        "integrity": "sha512-V/ve0WbDojzajy7ZwHVi3MRxujeyqvzX1uGO9QZSXuD+WUe2swll1OB3Mv+kI9ZU6fMFkbUM9MUgBA+Hc1j2tA==",
+        "name": "@upstash/context7-mcp",
+        "version": "4.6.0"
+      },
+      "prompts": {},
+      "serverInfo": {
+        "name": "Context7",
+        "version": "4.6.0"
+      },
+      "source": {
+        "args": [
+          "-y",
+          "@upstash/context7-mcp@4.6.0"
+        ],
+        "command": "npx"
+      },
+      "tools": {
+        "query-docs": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true,
+            "readOnlyHint": true
+          },
+          "description": "Retrieves and queries up-to-date documentation and code examples from Context7 for any programming library or framework.\n\nYou must call 'Resolve Context7 Library ID' tool first to obtain the exact Context7-compatible library ID required to use this tool, UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version' in their query.\n\nDo not call this tool more than 3 times per question.\n\nIf you know the programming language the user is working in, pass it as `language` so the results match their setup.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "language": {
+                "description": "Programming language the user is writing code in, such as 'Python', 'TypeScript', 'Go', or 'C#'. Ranks code examples in that language first. Leave it out when the language is unknown or does not apply.",
+                "type": "string"
+              },
+              "libraryId": {
+                "description": "Exact Context7-compatible library ID (e.g., '/mongodb/docs', '/vercel/next.js', '/supabase/supabase', '/vercel/next.js/v16.2.9') retrieved from 'resolve-library-id' or directly from user query in the format '/org/project' or '/org/project/version'.",
+                "type": "string"
+              },
+              "query": {
+                "description": "What to look up in the library's documentation, scoped to a single concept. Be specific and include relevant details, but keep each query to one topic — if the user's question spans multiple distinct concepts, make a separate call per concept instead of combining them, unless the question is about how the concepts interact. Good: 'How to set up authentication with JWT in Express.js' or 'React useEffect cleanup function examples'. Bad (too vague): 'auth' or 'hooks'. Bad (too broad): 'routing and auth and caching in Next.js'. The query is sent to the Context7 API for processing. Do not include any sensitive or confidential information such as API keys, passwords, credentials, personal data, or proprietary code in your query.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "libraryId",
+              "query"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-e4MxSZ7HVWwCrFvN6DkB1pdbj5C6pKV4NO8Gr9KROjk=",
+          "title": "Query Documentation"
+        },
+        "resolve-library-id": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true,
+            "readOnlyHint": true
+          },
+          "description": "Resolves a package/product name to a Context7-compatible library ID and returns matching libraries.\n\nYou MUST call this function before 'Query Documentation' tool to obtain a valid Context7-compatible library ID UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version' in their query.\n\nEach result includes:\n- Library ID: Context7-compatible identifier (format: /org/project)\n- Name: Library or package name\n- Description: Short summary\n- Code Snippets: Number of available code examples\n- Source Reputation: Authority indicator (High, Medium, Low, or Unknown)\n- Benchmark Score: Quality indicator (100 is the highest score)\n- Versions: List of versions if available. Use one of those versions if the user provides a version in their query. The format of the version is /org/project/version.\n\nFor best results, select libraries based on name match, source reputation, snippet coverage, benchmark score, and relevance to your use case.\n\nSelection Process:\n1. Analyze the query to understand what library/package the user is looking for\n2. Return the most relevant match based on:\n- Name similarity to the query (exact matches prioritized)\n- Description relevance to the query's intent\n- Documentation coverage (prioritize libraries with higher Code Snippet counts)\n- Source reputation (consider libraries with High or Medium reputation more authoritative)\n- Benchmark Score: Quality indicator (100 is the highest score)\n\nResponse Format:\n- Return the selected library ID in a clearly marked section\n- Provide a brief explanation for why this library was chosen\n- If multiple good matches exist, acknowledge this but proceed with the most relevant one\n- If no good matches exist, clearly state this and suggest query refinements\n\nFor ambiguous queries, request clarification before proceeding with a best-guess match.\n\nIMPORTANT: Do not call this tool more than 3 times per question. If you cannot find what you need after 3 calls, use the best result you have.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "libraryName": {
+                "description": "Library name to search for and retrieve a Context7-compatible library ID. Use the official library name with proper punctuation — e.g., 'Next.js' instead of 'nextjs', 'Customer.io' instead of 'customerio', 'Three.js' instead of 'threejs'.",
+                "type": "string"
+              },
+              "query": {
+                "description": "What to look up in the library's documentation. This is used to rank library results by relevance to what the user is trying to accomplish. The query is sent to the Context7 API for processing. Do not include any sensitive or confidential information such as API keys, passwords, credentials, personal data, or proprietary code in your query.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "libraryName",
+              "query"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-M/JY8KTiqxvyRfYlbBQN9zSt5ruELE9r8KJsWxFifdY=",
+          "title": "Resolve Context7 Library ID"
+        }
+      },
+      "transport": "stdio"
+    },
+    "filesystem": {
+      "integrity": "sha256-MreS5F73ibf8+2bc7t7Cz8dbS0R6QOjYvKACIukycUA=",
+      "package": {
+        "ecosystem": "npm",
+        "integrity": "sha512-dnwDFqYi2Q3VbFDnVOUme4+81CzwHBj3OKeYEgZ6UkBp7rWSm5OKiidemgIF0kkt5AyAi6mHsqx0cfTZBP1DJQ==",
+        "name": "@modelcontextprotocol/server-filesystem",
+        "version": "2.3.0"
+      },
+      "serverInfo": {
+        "name": "secure-filesystem-server",
+        "version": "2.3.0"
+      },
+      "source": {
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem@2.3.0",
+          "."
+        ],
+        "command": "npx"
+      },
+      "tools": {
+        "append_file": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Append text to the end of a file, creating the file if it does not exist. The existing content is never changed or replaced. The text is appended exactly as given, with no newline added before or after it, so end it with a newline if the next append should start on a new line. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "content": {
+                "description": "Text to append, exactly as given. No newline is added: end it with \\n if the next append should start on a new line.",
+                "type": "string"
+              },
+              "path": {
+                "description": "The file to append to; it is created if it does not exist. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "content",
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-4K+c2uKraRbqFEsXmKFCZvJttvrEpBSdVGJjOJgk8rQ=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Append File"
+        },
+        "copy_file": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Copy a file to a new location, without reading its content into the conversation. Copies one regular file, keeping its permissions and modification time; directories are not copied. If the destination exists, the operation will fail: it never overwrites. Both source and destination must be within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "destination": {
+                "description": "Where to create the copy; nothing may exist there yet",
+                "type": "string"
+              },
+              "source": {
+                "description": "The file to copy",
+                "type": "string"
+              }
+            },
+            "required": [
+              "destination",
+              "source"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-v5nFdbKnvbGcmIXmrxnaiMio7BePsL/7Jy6ptADJrmg=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Copy File"
+        },
+        "create_directory": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Create a new directory or ensure a directory exists. Can create multiple nested directories in one operation. If the directory already exists, this operation will succeed silently. Perfect for setting up directory structures for projects or ensuring required paths exist. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "path": {
+                "description": "The directory to create, with any missing parents; an existing directory is left as is. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-SgXrkaFLXYEWc1KJ27Ko/CE7yRZffm6yIx1ThZMF3b8=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Create Directory"
+        },
+        "directory_tree": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Get a recursive tree view of files and directories as a JSON structure. Each entry includes 'name', 'type' (file/directory), and 'children' for directories. Files have no children array, while directories always have a children array (which may be empty), except at the last level when 'depth' limits the tree: those directories are not read and have no children array. The output is formatted with 2-space indentation for readability. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "depth": {
+                "description": "How many levels to descend: 1 lists only the entries directly in path. Directories at the last level have no children array. Omit for the whole tree.",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "type": "integer"
+              },
+              "excludePatterns": {
+                "default": [],
+                "description": "Patterns for entries to leave out, with their contents, matched against each entry's path relative to path. A pattern with no '*' matches that name at any depth ('node_modules' leaves out every node_modules directory); a pattern with '*' is a glob matched as written, and one ending in '/**' also leaves out the directory it names.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "path": {
+                "description": "The directory at the root of the tree. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-KHrbPem4QJw7Jnnw0OhUMWgl9OKrTdJJRzAlu/DBOOE=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Directory Tree"
+        },
+        "edit_file": {
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Make line-based edits to a text file. Edits apply in order, each to the result of the ones before it, and each replaces the first match of its oldText with newText. oldText must match the file's text exactly, except that line endings (LF or CRLF) never matter and, when there is no exact match, a run of whole lines matches if each line is equal once leading and trailing whitespace is ignored (newText then takes the file's indentation). Whitespace inside a line must match. If any edit has no match, nothing is written and the error shows the closest lines of the file, numbered, to copy oldText from. Returns a git-style diff showing the changes made. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "dryRun": {
+                "default": false,
+                "description": "Preview changes using git-style diff format",
+                "type": "boolean"
+              },
+              "edits": {
+                "description": "The replacements to make, applied in order, each to the result of the ones before it. If any one has no match, none is written.",
+                "items": {
+                  "properties": {
+                    "newText": {
+                      "description": "Text to replace with",
+                      "type": "string"
+                    },
+                    "oldText": {
+                      "description": "Text to search for - must match exactly",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "newText",
+                    "oldText"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "path": {
+                "description": "The text file to edit. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "edits",
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-fk0XL4mycVuyxHiDX9EubbBlu3yo+l/KrmWVp70RBlE=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Edit File"
+        },
+        "get_file_info": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Retrieve detailed metadata about a file or directory. Returns comprehensive information including size, creation time, last modified time, permissions, type and hard-link count. This tool is perfect for understanding file characteristics without reading the actual content. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "path": {
+                "description": "The file or directory to describe. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-WcswJBQRWT0pp70bsZ7IlgGFeX5SgSZyB6w7YRRoIEI=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Get File Info"
+        },
+        "list_allowed_directories": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Returns the list of directories that this server is allowed to access. Subdirectories within these allowed directories are also accessible. Use this to understand which directories and their nested paths are available before trying to access files.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {},
+            "type": "object"
+          },
+          "integrity": "sha256-5aOhv0UH52r9TJg+lCmHGPak+GzI2AAlIfZuQrzolu0=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "List Allowed Directories"
+        },
+        "list_directory": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "List the files and directories directly inside a path, each marked [FILE] or [DIR]. Use it to see what a directory contains; when you also need each entry's size or want entries sorted by size, use list_directory_with_sizes instead, and for a recursive view use directory_tree. Returns one line per entry. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "path": {
+                "description": "The directory to list. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-L4FnQFl4rtw3LytD7N9fG81xe0FSuW7WZbhuFtGmvLg=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "List Directory"
+        },
+        "list_directory_with_sizes": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "List the files and directories directly inside a path with each file's size, marked [FILE] or [DIR], sorted by name or by size, largest first (sortBy). Use it when sizes matter, such as finding the largest files; for names only, use list_directory, which returns less text. Returns one line per entry, followed by the totals. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "path": {
+                "description": "The directory to list. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              },
+              "sortBy": {
+                "default": "name",
+                "description": "Sort entries by name or size",
+                "enum": [
+                  "name",
+                  "size"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-pJuW4mxMiJb4BDUbhypvPRu8A825G/EGrzuE7bxAxvE=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "List Directory with Sizes"
+        },
+        "move_file": {
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Move or rename files and directories. Can move files between directories and rename them in a single operation. If the destination exists, the operation will fail. Works across different directories and can be used for simple renaming within the same directory. Both source and destination must be within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "destination": {
+                "description": "Its new path, including the name; nothing may exist there yet. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              },
+              "source": {
+                "description": "The file or directory to move or rename. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "destination",
+              "source"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-zfJW7sNkOv6tvWVIAGriNTtS+TKcZZRGfTKxqUlhXYg=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Move File"
+        },
+        "read_file": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Read the complete contents of a file as text. DEPRECATED: Use read_text_file instead.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "head": {
+                "description": "If provided, returns only the first N lines of the file",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "path": {
+                "description": "The file to read as text. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              },
+              "tail": {
+                "description": "If provided, returns only the last N lines of the file",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-IGo8i6oGO1XHPawimmW7+KWaxn8OamgSIl/r/vdywqQ=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Read File (Deprecated)"
+        },
+        "read_media_file": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Read a file and return it as a base64-encoded content block with its MIME type. Image and audio files are returned as image/audio content; any other file type is returned as an embedded resource. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "path": {
+                "description": "The image, audio or other file to read as base64. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-FrJNQKPpqFTKZdSskKlYZaC/iOcofkB/l1MaF5PHGvo=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "items": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        },
+                        "mimeType": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "enum": [
+                            "image",
+                            "audio"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "mimeType",
+                        "type"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "resource": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "blob": {
+                              "type": "string"
+                            },
+                            "mimeType": {
+                              "type": "string"
+                            },
+                            "uri": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "blob",
+                            "uri"
+                          ],
+                          "type": "object"
+                        },
+                        "type": {
+                          "const": "resource",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "resource",
+                        "type"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Read Media File"
+        },
+        "read_multiple_files": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Read the contents of multiple files simultaneously. This is more efficient than reading files one by one when you need to analyze or compare multiple files. Each file's content is returned with its path as a reference. Failed reads for individual files won't stop the entire operation. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "paths": {
+                "description": "Array of file paths to read. Each path must be a string pointing to a valid file within allowed directories.",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "required": [
+              "paths"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-bhqk9Dm37IpGapJSCrPvYVCD6eIOxM9ek/AIHcwJF0E=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Read Multiple Files"
+        },
+        "read_text_file": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "head": {
+                "description": "If provided, returns only the first N lines of the file",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "path": {
+                "description": "The file to read as text. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              },
+              "tail": {
+                "description": "If provided, returns only the last N lines of the file",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-SiQLSmYbE9ewrw08pJoCRgPawiBspXNCIFcC2nYFhp0=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Read Text File"
+        },
+        "search_files": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Find files and directories by NAME, not by content: this tool never reads or searches inside files. It walks the tree under 'path' and matches a glob pattern against each entry's path relative to 'path' (case-sensitive). Use '*.ext' to match entries directly under 'path', and '**/*.ext' or '**/name' to match at any depth. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "excludePatterns": {
+                "default": [],
+                "description": "Patterns for entries to leave out, with their contents, matched against each entry's path relative to path. A pattern with no '*' matches that name at any depth ('node_modules' leaves out every node_modules directory); a pattern with '*' is a glob matched as written, and one ending in '/**' also leaves out the directory it names.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "path": {
+                "description": "The directory to search under. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              },
+              "pattern": {
+                "description": "Glob matched against each entry's path relative to path, never its content: '*.ts' matches directly under path, '**/*.ts' at any depth.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "pattern"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-hcbGRIuDQuWwAz3xDZ+5AHfqw3Yc6Y3cc7bnkvbjGyc=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Search Files"
+        },
+        "write_file": {
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Create a new file or completely overwrite an existing file with new content. Use with caution as it will overwrite existing files without warning. Handles text content with proper encoding. Only works within allowed directories.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "content": {
+                "description": "The complete text the file will contain, replacing any it had",
+                "type": "string"
+              },
+              "path": {
+                "description": "The file to create, or to overwrite if it exists; its parent directory must exist. Absolute, or relative to an allowed directory; it must resolve inside the allowed directories.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "content",
+              "path"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-+bmMx4Qz/9QOqB8YL6LGBy/E+jiPLvsv2dpuP6DMOY8=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "type": "object"
+          },
+          "title": "Write File"
+        }
+      },
+      "transport": "stdio"
+    },
+    "memory": {
+      "integrity": "sha256-lKQH7Oa0EDWFMHFDq+uoE7w8rHD0mrtXpot7H9BQTbU=",
+      "package": {
+        "ecosystem": "npm",
+        "integrity": "sha512-MbjK6Pi+uGU3EwGk9HyCp/1zKwnuB/QMQ/wQOlswaLgHzIeeCuyVdWUTWg0hTGBk+n+3l5la5a4egbt8YuoVAg==",
+        "name": "@modelcontextprotocol/server-memory",
+        "version": "2.1.1"
+      },
+      "serverInfo": {
+        "name": "memory-server",
+        "version": "2.1.1"
+      },
+      "source": {
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-memory@2.1.1"
+        ],
+        "command": "npx"
+      },
+      "tools": {
+        "add_observations": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Add new observations to existing entities in the knowledge graph",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "observations": {
+                "description": "The observations to add, grouped by entity. Each entity must already exist; an observation it already has is not added again",
+                "items": {
+                  "properties": {
+                    "contents": {
+                      "description": "An array of observation contents to add",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "entityName": {
+                      "description": "The name of the entity to add the observations to",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "contents",
+                    "entityName"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "observations"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-O3Vg9idw/QfIyupidiZ3V3EKtYHuelhp+Iy2P0CG/6g=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "results": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "addedObservations": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "entityName": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "addedObservations",
+                    "entityName"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "results"
+            ],
+            "type": "object"
+          },
+          "title": "Add Observations"
+        },
+        "create_entities": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Create multiple new entities in the knowledge graph. An entity whose name already exists, or repeats an earlier entity in the same call, is skipped and its observations are not added; the result lists the skipped names in `skipped`. Use add_observations to add observations to an existing entity.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "entities": {
+                "description": "The entities to create, each with a name unique in the graph",
+                "items": {
+                  "properties": {
+                    "entityType": {
+                      "description": "The type of the entity",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the entity",
+                      "type": "string"
+                    },
+                    "observations": {
+                      "description": "An array of observation contents associated with the entity",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "entityType",
+                    "name",
+                    "observations"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "entities"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-KZDP/j6yjivceoDFl3vEZmT18h+vc0xkGPa1eF2dIaU=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "entities": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "entityType": {
+                      "description": "The type of the entity",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the entity",
+                      "type": "string"
+                    },
+                    "observations": {
+                      "description": "An array of observation contents associated with the entity",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "entityType",
+                    "name",
+                    "observations"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "skipped": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "entities"
+            ],
+            "type": "object"
+          },
+          "title": "Create Entities"
+        },
+        "create_relations": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Create multiple new relations between entities in the knowledge graph. Relations should be in active voice",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "relations": {
+                "description": "The relations to create. Both ends must name existing entities; a relation already in the graph is not added again",
+                "items": {
+                  "properties": {
+                    "from": {
+                      "description": "The name of the entity where the relation starts",
+                      "type": "string"
+                    },
+                    "relationType": {
+                      "description": "The type of the relation",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "The name of the entity where the relation ends",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "relationType",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "relations"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-yuYXBXqn2Td12PV8eozjJc6qAssTqpxor85N3NmcMCY=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "relations": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "description": "The name of the entity where the relation starts",
+                      "type": "string"
+                    },
+                    "relationType": {
+                      "description": "The type of the relation",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "The name of the entity where the relation ends",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "relationType",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "relations"
+            ],
+            "type": "object"
+          },
+          "title": "Create Relations"
+        },
+        "delete_entities": {
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Delete whole entities from the knowledge graph, together with every relation that points to or from them and all their observations. Use it only to remove an entity entirely; to remove a link between two entities and keep both, use delete_relations, and to remove facts from an entity, use delete_observations. Cannot be undone.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "entityNames": {
+                "description": "An array of entity names to delete",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "entityNames"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-vV4hkFnNgGxpebSGcY7TwcrY+LpXF4rlrQct1te+rjE=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "success": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "message",
+              "success"
+            ],
+            "type": "object"
+          },
+          "title": "Delete Entities"
+        },
+        "delete_observations": {
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Delete specific observations from entities in the knowledge graph",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "deletions": {
+                "description": "The observations to delete, grouped by entity, each matched by its exact text",
+                "items": {
+                  "properties": {
+                    "entityName": {
+                      "description": "The name of the entity containing the observations",
+                      "type": "string"
+                    },
+                    "observations": {
+                      "description": "An array of observations to delete",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "entityName",
+                    "observations"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "deletions"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-AF/m3zi0nnHGvJc8BrsDGJXAFFjBCPEUbNiSw6ZbwZ4=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "success": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "message",
+              "success"
+            ],
+            "type": "object"
+          },
+          "title": "Delete Observations"
+        },
+        "delete_relations": {
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Delete specific relations (from, to, relationType) from the knowledge graph and keep the entities they connect. Each relation must match an existing one exactly on all three fields; if unsure, call open_nodes (or search_nodes) first to read the stored relationType. Use it to remove a link between two entities; to remove an entity itself, use delete_entities. Cannot be undone.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "relations": {
+                "description": "An array of relations to delete",
+                "items": {
+                  "properties": {
+                    "from": {
+                      "description": "The name of the entity where the relation starts",
+                      "type": "string"
+                    },
+                    "relationType": {
+                      "description": "The type of the relation",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "The name of the entity where the relation ends",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "relationType",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "relations"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-YOcoXIpaHZKiHacPSL1mqXUrYBFn9b/oclDMCVH/LVQ=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "success": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "message",
+              "success"
+            ],
+            "type": "object"
+          },
+          "title": "Delete Relations"
+        },
+        "open_nodes": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Retrieve specific entities by their exact names, with every relation that touches one of them. Use this when you already know the names (from the conversation, or from an earlier search_nodes or read_graph result); it is the cheapest way to read entities you can name. Prefer search_nodes when you only have a keyword or part of a name. Names that do not exist are skipped.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "names": {
+                "description": "An array of entity names to retrieve",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "observationLimit": {
+                "description": "Return at most this many observations per entity (the first ones, in the order they were added) and add each entity's total as observationCount. Use 0 for names, types and counts only: a cheap overview of a large graph, after which open_nodes reads the entities you need in full. Omit to return every observation.",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "names"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-fb2HBotEVb+ykLSglDCuYa+BhDowNaQJQx339c/dHK4=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "entities": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "entityType": {
+                      "description": "The type of the entity",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the entity",
+                      "type": "string"
+                    },
+                    "observationCount": {
+                      "description": "How many observations the entity holds in total; present only when observationLimit was given",
+                      "maximum": 9007199254740991,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "observations": {
+                      "description": "An array of observation contents associated with the entity",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "entityType",
+                    "name",
+                    "observations"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "relations": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "description": "The name of the entity where the relation starts",
+                      "type": "string"
+                    },
+                    "relationType": {
+                      "description": "The type of the relation",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "The name of the entity where the relation ends",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "relationType",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "entities",
+              "relations"
+            ],
+            "type": "object"
+          },
+          "title": "Open Nodes"
+        },
+        "read_graph": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Read the entire knowledge graph: every entity with its observations, and every relation. The result grows with the graph, so use this only when you need everything; prefer search_nodes to find entities by keyword and open_nodes to read entities whose names you know.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "entityTypes": {
+                "description": "Return only entities whose entityType is one of these (exact match), and only the relations that touch one of them. Omit to return every entity.",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "observationLimit": {
+                "description": "Return at most this many observations per entity (the first ones, in the order they were added) and add each entity's total as observationCount. Use 0 for names, types and counts only: a cheap overview of a large graph, after which open_nodes reads the entities you need in full. Omit to return every observation.",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "integrity": "sha256-a9iXbgHQ9azz5hV/lfIruEIIz4RYZTaz2uryUAaxCZs=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "entities": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "entityType": {
+                      "description": "The type of the entity",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the entity",
+                      "type": "string"
+                    },
+                    "observationCount": {
+                      "description": "How many observations the entity holds in total; present only when observationLimit was given",
+                      "maximum": 9007199254740991,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "observations": {
+                      "description": "An array of observation contents associated with the entity",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "entityType",
+                    "name",
+                    "observations"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "relations": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "description": "The name of the entity where the relation starts",
+                      "type": "string"
+                    },
+                    "relationType": {
+                      "description": "The type of the relation",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "The name of the entity where the relation ends",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "relationType",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "entities",
+              "relations"
+            ],
+            "type": "object"
+          },
+          "title": "Read Graph"
+        },
+        "search_nodes": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Search the knowledge graph for entities whose name, type or observations contain the query (case-insensitive). Use this when you have a keyword, a topic or part of a name but not the exact entity names. Prefer open_nodes when you already know the exact names, and use read_graph only when you need the whole graph. Returns the matching entities and every relation that touches one of them.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "limit": {
+                "description": "Return at most this many matching entities (the first matches, in stored order), with the relations that touch them. Omit to return every match.",
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "observationLimit": {
+                "description": "Return at most this many observations per entity (the first ones, in the order they were added) and add each entity's total as observationCount. Use 0 for names, types and counts only: a cheap overview of a large graph, after which open_nodes reads the entities you need in full. Omit to return every observation.",
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "query": {
+                "description": "The search query to match against entity names, types, and observation content",
+                "maxLength": 2048,
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-qQ4BpqhdDC3/2E9pzQacJSPQV1tix0F9M2ktvu/jcms=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "entities": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "entityType": {
+                      "description": "The type of the entity",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the entity",
+                      "type": "string"
+                    },
+                    "observationCount": {
+                      "description": "How many observations the entity holds in total; present only when observationLimit was given",
+                      "maximum": 9007199254740991,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "observations": {
+                      "description": "An array of observation contents associated with the entity",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "entityType",
+                    "name",
+                    "observations"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "relations": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "description": "The name of the entity where the relation starts",
+                      "type": "string"
+                    },
+                    "relationType": {
+                      "description": "The type of the relation",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "The name of the entity where the relation ends",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "relationType",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "entities",
+              "relations"
+            ],
+            "type": "object"
+          },
+          "title": "Search Nodes"
+        }
+      },
+      "transport": "stdio"
+    },
+    "sequential-thinking": {
+      "integrity": "sha256-IuMj9Wf//QHGIVRzS4VnGvO+jqh+us2NfpHHJ8xIqTE=",
+      "package": {
+        "ecosystem": "npm",
+        "integrity": "sha512-yvj9eotCoXX7BLmyOKdajnCYB5vgeCS3YwtEU0wCIcVgl+xvCdBtjkd0CTA45Ljh2+Iv1538n28VAnrstps1Tg==",
+        "name": "@modelcontextprotocol/server-sequential-thinking",
+        "version": "2.1.1"
+      },
+      "serverInfo": {
+        "name": "sequential-thinking-server",
+        "version": "2.1.1"
+      },
+      "source": {
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-sequential-thinking@2.1.1"
+        ],
+        "command": "npx"
+      },
+      "tools": {
+        "sequentialthinking": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "A detailed tool for dynamic and reflective problem-solving through thoughts.\nEach thought can build on, question, or revise previous insights as understanding deepens.\n\nWhen to use this tool:\n- Breaking down complex problems into steps\n- Planning and design with room for revision\n- Analysis that might need course correction\n- Problems where the full scope might not be clear initially\n- Tasks that need to maintain context over multiple steps\n- Situations where irrelevant information needs to be filtered out\n\nYou should:\n1. Estimate totalThoughts up front and adjust it up or down as you go; thoughtNumber may exceed it\n2. Question or revise earlier thoughts (isRevision with revisesThought), or branch (branchFromThought with branchId)\n3. Express uncertainty, and ignore information irrelevant to the current step\n4. Generate a solution hypothesis, verify it against the earlier steps, and repeat until satisfied\n5. Set nextThoughtNeeded to false only when truly done and a satisfactory answer is reached",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "branchFromThought": {
+                "description": "Branching point thought number",
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "branchId": {
+                "description": "Branch identifier",
+                "type": "string"
+              },
+              "isRevision": {
+                "description": "Whether this revises previous thinking",
+                "type": [
+                  "boolean",
+                  "string"
+                ]
+              },
+              "needsMoreThoughts": {
+                "description": "If more thoughts are needed",
+                "type": [
+                  "boolean",
+                  "string"
+                ]
+              },
+              "nextThoughtNeeded": {
+                "description": "Whether another thought step is needed",
+                "type": [
+                  "boolean",
+                  "string"
+                ]
+              },
+              "revisesThought": {
+                "description": "Which thought is being reconsidered",
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "thought": {
+                "description": "Your current thinking step",
+                "type": "string"
+              },
+              "thoughtNumber": {
+                "description": "Current thought number (numeric value, e.g., 1, 2, 3)",
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "totalThoughts": {
+                "description": "Estimated total thoughts needed (numeric value, e.g., 5, 10)",
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "nextThoughtNeeded",
+              "thought",
+              "thoughtNumber",
+              "totalThoughts"
+            ],
+            "type": "object"
+          },
+          "integrity": "sha256-yHyBVCyMQ2C0ZB5dYrt+Am1pW4kjqerMZKGce8nVmhw=",
+          "outputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "additionalProperties": false,
+            "properties": {
+              "branches": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "nextThoughtNeeded": {
+                "type": "boolean"
+              },
+              "thoughtHistoryLength": {
+                "type": "number"
+              },
+              "thoughtNumber": {
+                "type": "number"
+              },
+              "totalThoughts": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "branches",
+              "nextThoughtNeeded",
+              "thoughtHistoryLength",
+              "thoughtNumber",
+              "totalThoughts"
+            ],
+            "type": "object"
+          },
+          "title": "Sequential Thinking"
+        }
+      },
+      "transport": "stdio"
+    },
+    "time": {
+      "integrity": "sha256-v+1pbR/Gqo7ExtiD/X1Zofx8KE6A3Rxqw4NrW7jWBBQ=",
+      "package": {
+        "ecosystem": "pypi",
+        "integrity": "sha256-FyX7BoWd211GDU6oIRU/7b2EckHxovjb3+4IOHmxzaQ=",
+        "name": "mcp-server-time",
+        "version": "2026.11.11"
+      },
+      "prompts": {},
+      "serverInfo": {
+        "name": "mcp-time",
+        "version": "2026.11.11"
+      },
+      "source": {
+        "args": [
+          "mcp-server-time==2026.11.11"
+        ],
+        "command": "uvx"
+      },
+      "tools": {
+        "convert_time": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Convert time between timezones",
+          "inputSchema": {
+            "properties": {
+              "source_timezone": {
+                "default": "America/Sao_Paulo",
+                "description": "Source IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "title": "Source Timezone",
+                "type": "string"
+              },
+              "target_timezone": {
+                "default": "America/Sao_Paulo",
+                "description": "Target IANA timezone name (e.g., 'Asia/Tokyo', 'America/San_Francisco'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "title": "Target Timezone",
+                "type": "string"
+              },
+              "time": {
+                "description": "Time to convert in 24-hour format (HH:MM)",
+                "title": "Time",
+                "type": "string"
+              }
+            },
+            "required": [
+              "time"
+            ],
+            "title": "convert_timeArguments",
+            "type": "object"
+          },
+          "integrity": "sha256-QjExUvZuAZ9l9ljxGCzTL1kPLH7DDsoX+4V4Sli/ePo=",
+          "outputSchema": {
+            "$defs": {
+              "LaterOccurrence": {
+                "description": "The second reading of an ambiguous source time (#5196).",
+                "properties": {
+                  "note": {
+                    "title": "Note",
+                    "type": "string"
+                  },
+                  "source": {
+                    "$ref": "#/$defs/TimeResult"
+                  },
+                  "target": {
+                    "$ref": "#/$defs/TimeResult"
+                  },
+                  "time_difference": {
+                    "title": "Time Difference",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "note",
+                  "source",
+                  "target",
+                  "time_difference"
+                ],
+                "title": "LaterOccurrence",
+                "type": "object"
+              },
+              "TimeResult": {
+                "properties": {
+                  "datetime": {
+                    "title": "Datetime",
+                    "type": "string"
+                  },
+                  "day_of_week": {
+                    "title": "Day Of Week",
+                    "type": "string"
+                  },
+                  "is_dst": {
+                    "title": "Is Dst",
+                    "type": "boolean"
+                  },
+                  "timezone": {
+                    "title": "Timezone",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "datetime",
+                  "day_of_week",
+                  "is_dst",
+                  "timezone"
+                ],
+                "title": "TimeResult",
+                "type": "object"
+              }
+            },
+            "properties": {
+              "later_occurrence": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/LaterOccurrence"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Set only when the source time occurs twice on this date because a clock change repeats it (a DST fall-back): the same conversion at its second occurrence. source and target are the first."
+              },
+              "source": {
+                "$ref": "#/$defs/TimeResult"
+              },
+              "target": {
+                "$ref": "#/$defs/TimeResult"
+              },
+              "time_difference": {
+                "title": "Time Difference",
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "target",
+              "time_difference"
+            ],
+            "title": "TimeConversionResult",
+            "type": "object"
+          }
+        },
+        "get_current_time": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Get current time in a specific timezone",
+          "inputSchema": {
+            "properties": {
+              "timezone": {
+                "default": "America/Sao_Paulo",
+                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "title": "Timezone",
+                "type": "string"
+              }
+            },
+            "title": "get_current_timeArguments",
+            "type": "object"
+          },
+          "integrity": "sha256-PJSrwQJ/6lmBYv7CUpLg4HHpLaWADJL8KkfUXehUp34=",
+          "outputSchema": {
+            "properties": {
+              "datetime": {
+                "title": "Datetime",
+                "type": "string"
+              },
+              "day_of_week": {
+                "title": "Day Of Week",
+                "type": "string"
+              },
+              "is_dst": {
+                "title": "Is Dst",
+                "type": "boolean"
+              },
+              "timezone": {
+                "title": "Timezone",
+                "type": "string"
+              }
+            },
+            "required": [
+              "datetime",
+              "day_of_week",
+              "is_dst",
+              "timezone"
+            ],
+            "title": "TimeResult",
+            "type": "object"
+          }
+        },
+        "get_time_ago": {
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Get the time a given number of days, hours, minutes and seconds ago in a specific timezone",
+          "inputSchema": {
+            "properties": {
+              "days_ago": {
+                "default": 0,
+                "description": "Whole days before now",
+                "minimum": 0,
+                "title": "Days Ago",
+                "type": "integer"
+              },
+              "hours_ago": {
+                "default": 0,
+                "description": "Whole hours before now",
+                "minimum": 0,
+                "title": "Hours Ago",
+                "type": "integer"
+              },
+              "minutes_ago": {
+                "default": 0,
+                "description": "Whole minutes before now",
+                "minimum": 0,
+                "title": "Minutes Ago",
+                "type": "integer"
+              },
+              "seconds_ago": {
+                "default": 0,
+                "description": "Whole seconds before now",
+                "minimum": 0,
+                "title": "Seconds Ago",
+                "type": "integer"
+              },
+              "timezone": {
+                "default": "America/Sao_Paulo",
+                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Optional: defaults to the server's local timezone, 'America/Sao_Paulo', when omitted.",
+                "title": "Timezone",
+                "type": "string"
+              }
+            },
+            "title": "get_time_agoArguments",
+            "type": "object"
+          },
+          "integrity": "sha256-Cu1yaG5UEgyEeUufcTK8bNxKP3Fid81GViFLkmlRsek=",
+          "outputSchema": {
+            "properties": {
+              "datetime": {
+                "title": "Datetime",
+                "type": "string"
+              },
+              "day_of_week": {
+                "title": "Day Of Week",
+                "type": "string"
+              },
+              "is_dst": {
+                "title": "Is Dst",
+                "type": "boolean"
+              },
+              "timezone": {
+                "title": "Timezone",
+                "type": "string"
+              }
+            },
+            "required": [
+              "datetime",
+              "day_of_week",
+              "is_dst",
+              "timezone"
+            ],
+            "title": "TimeResult",
+            "type": "object"
+          }
+        }
+      },
+      "transport": "stdio"
+    }
+  }
+}

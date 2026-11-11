@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "memory": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-memory@2.1.1"] },
+    "sequential-thinking": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@2.1.1"] },
+    "filesystem": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem@2.3.0", "."] },
+    "context7": { "command": "npx", "args": ["-y", "@upstash/context7-mcp@4.6.0"] },
+    "time": { "command": "uvx", "args": ["mcp-server-time==2026.11.11"] }
+  }
+}

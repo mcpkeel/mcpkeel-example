@@ -1,0 +1,23 @@
+name: MCP lockfile
+# Once a week, accept whatever the servers send now on a branch, and open a
+# pull request with the report. Merge it to accept the change, close it to
+# keep the current baseline.
+on:
+  schedule:
+    - cron: "0 10 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: astral-sh/setup-uv@v10
+      - uses: mcpkeel/mcpkeel@v0.4.0
+        with:
+          mode: update-pr
